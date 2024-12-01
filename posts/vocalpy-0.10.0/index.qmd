@@ -1,0 +1,69 @@
+---
+title: "Blogging and babbling: VocalPy 0.10.0 released"
+author: "David Nicholson"
+date: "2024-12-01"
+categories: [vocalpy, release]
+image: "image.jpg"
+---
+
+Hey, it's me, [David](https://nicholdav.info/).  
+
+I'm the person who develops most of [this code](https://github.com/vocalpy). 
+
+Hopefully, 
+at some point, a team of much smarter people will work together to develop it, 
+or something like it, once I can convince them that's a good idea.  
+Then finally I can spend more time playing video games, playing guitar, birding, gardening. 
+You know, fun stuff that people who are not open source software maintainers do.
+
+But recently I have realized that just writing the code isn't enough 
+(insert reference to "if you build it, they will come" here).
+
+So, okay, fine, we will have a developer's blog.
+
+Let me say we have gotten a lot of contributors 
+to at least one package, (vak)[https://github.com/vocalpy/vak?tab=readme-ov-file#contributors-].
+I am expecting to get more contributors to 
+our core package [VocalPy], 
+once we share results we are getting with the package right now,
+using newer features we have added.
+
+I just released version 0.10.0.
+I am feeling good about this release 
+because I think it's a pretty solid step towards the package 
+actually being useful.
+Let me tell you why that is, 
+by giving you a brief rundown of the new features and changes,
+with some narrative that you won't get from the 
+[CHANGELOG]().
+You definitely won't get that from the auto-generated release notes 
+that GitHub gives us, 
+since there's only one commit,
+and it points to this pull request, 
+cryptically named "Post-NMAC GRC 2024 changes".
+And, it's a lot of changes.
+
+So, context:
+a lot of the features I added and changes I made 
+were after I co-organized and taught 
+this [Acoustic Communication And Bioacoustics Bootcamp] 
+at the Neural Mechanisms of Acoustic Communication 2024 Gordon Research Seminar,
+along with the ever-excellent [Tessa Rhinehart]().
+
+I want to give a huge, huge thank you to [Nick Jourjine]() 
+and [Diana Liao]() for inviting Tessa and I to teach this workshop. 
+I know firsthand how important the skills that we taught are,
+especially for graduate students.
+It was incredibly gratifying to hear as much from participants in the workshop 
+and other organizers of the conference.
+If we did nothing else, 
+we pointed people to a lot of resources 
+including the website Tessa has created of bioacoustics software 
+(now with input from the research group she's in)
+and websites and papers on programming and computational projects 
+that I often point people to when I'm teaching.
+Obviously I'm biased but I think that computational methods 
+in this research area will only continue to become more important, 
+and I think Nick has had a lot of foresight 
+in linking these areas of neuroscience to 
+what people are doing in bioacoustics. 
