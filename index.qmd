@@ -1,5 +1,5 @@
 ---
-title: "devblog"
+title: "VocalPy blog"
 listing:
   contents: posts
   sort: "date desc"
