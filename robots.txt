@@ -1,1 +1,1 @@
-Sitemap: https://vocalpy.github.io/blog.vocalpy.org/sitemap.xml
+Sitemap: https://blog.vocalpy.org/sitemap.xml

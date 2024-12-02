@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://vocalpy.github.io/blog.vocalpy.org/about.html</loc>
+    <loc>https://blog.vocalpy.org/about.html</loc>
     <lastmod>2024-12-01T18:42:58.427Z</lastmod>
   </url>
   <url>
-    <loc>https://vocalpy.github.io/blog.vocalpy.org/posts/vocalpy-0.10.0/index.html</loc>
+    <loc>https://blog.vocalpy.org/posts/vocalpy-0.10.0/index.html</loc>
     <lastmod>2024-12-02T01:48:56.299Z</lastmod>
   </url>
   <url>
-    <loc>https://vocalpy.github.io/blog.vocalpy.org/index.html</loc>
+    <loc>https://blog.vocalpy.org/index.html</loc>
     <lastmod>2024-12-02T01:45:28.009Z</lastmod>
   </url>
 </urlset>
