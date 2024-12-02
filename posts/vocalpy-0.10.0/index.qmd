@@ -1,5 +1,6 @@
 ---
-title: "Blogging and babbling: VocalPy 0.10.0 released"
+title: "VocalPy 0.10.0 released"
+description: "Features and fixes in VocalPy 0.10.0"
 author: "David Nicholson"
 date: "2024-12-01"
 categories: [vocalpy, release]
