@@ -32,6 +32,7 @@ this [Acoustic Communication And Bioacoustics Bootcamp](https://github.com/vocal
 at the 2024 Neural Mechanisms of Acoustic Communication 2024 Gordon Research Seminar
 (AKA NMAC GRC 2024, [site here](https://www.grc.org/neural-mechanisms-of-acoustic-communication-grs-conference/2024/)),
 along with the ever-excellent [Tessa Rhinehart](https://www.tessarhinehart.com/).
+(Below I'll call it the ACAB workshop, for short.)
 
 I want to give a huge, huge thank you to [Nick Jourjine](https://nickjourjine.github.io/) 
 and [Diana Liao](https://scholar.google.com/citations?user=QeqBfDMAAAAJ&hl=en) for inviting Tessa and I to teach this workshop. 
@@ -78,9 +79,7 @@ So we'll go with that.
 A picture is worth a thousand words, so I'll also show you a picture, although I'm not sure if that makes me more or less pithy. 
 This picture shows changes between version 0.9.0 (top ) and version 0.10.0 (bottom).
 
-
 ![changes-schematic](vocalpy-0.9.0-0.10.0.svg)
-
 
 ### Better workflows for making sound clips and segmenting sound
 
@@ -219,19 +218,46 @@ I also had some inconsistencies where some functions in [`vocalpy.feature`]
 would return `Features`, and in other cases it was the `FeatureExtractor` 
 taking the output of one of those functions and making it into a `Features` instance.
 So I fixed that inconsistency 
-(as planned in [issue #145]() and [issue #146]()).
-Last but not least, I renamed the two functions we have right now, 
-from the very verbose, to 
+(as planned in [issue #145](https://github.com/vocalpy/vocalpy/issues/145) and [issue #146](https://github.com/vocalpy/vocalpy/issues/145)).
+Last but not least, I renamed the two feature extraction functions we have right now: 
+from the very verbose `vocalpy.features.sat.similarity_features` 
+and `vocalpy.features.soundsig.predefined_acoustic_features`, to just 
+`vocalpy.features.sat` and `vocalpy.features.biosound` 
+(as planned in [issue #190](https://github.com/vocalpy/vocalpy/issues/190)).
 
+## Add more example data and make it easier to work with
 
-
-## Vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN
-* CLN: Have FeatureExtractor only take Sound or list of Sounds #163
-* BUG: feature.soundsig.predefined_acoustic_features should return vocalpy.Features #145
-* BUG/CLN: FeatureExtractor should not be making Features instances #146
-* rename feature extraction functions -> `biosound` and `sat`
+A crucial part of any scientific Python package is having example data, 
+and having it be easy to work with, 
+as I found out the hard way during our live demo at the ACAB bootcamp 
+(protip: always make sure your code is never implicitly assuming you have access to the internet).
+Thankfully, for most of the Jupyter notebooks we worked through in the bootcamp, 
+we had asked participants to download data ahead of time.
+In VocalPy 0.10.0, you can now download mini-versions of these datasets
+(as planned in [issue #183](https://github.com/vocalpy/vocalpy/issues/183)), 
+so that you can work through these notebooks, 
+that are now vignettes in the documentation (see next section of this post).
+Additionally, I added single audio files 
+to use on the two built-in segmenting methods
+(as planned in [issue #182](https://github.com/vocalpy/vocalpy/issues/182)).
+I also refactored the way examples work, 
+again simplifying things (as planned in [issue #185](https://github.com/vocalpy/vocalpy/issues/185)).
+I'll spare you the details of what I refactored; 
+the key idea is that calling `vocalpy.example` with the name of an example 
+will now give you back a `VocalPy` data type by default, e.g. a `Sound`. 
+Before you got back a path to a file by default, 
+and you had to do the work of loading data from that file.
+In the case where it's one of the datasets with multiple files, 
+you now get back an instance of `ExampleData`, 
+a sort of Python `dictionary` where here also the default is 
+the value for each key is a list of VocalPy data types.
+If you want filenames instead of data types, 
+e.g. to demonstrate functionality for loading data from files, 
+you can instead specify `path=True`.
 
 ## Add vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN
+
+In the NMAC GRC 2024 ACAB bootcamp, 
 * Add single example files of BF song + mouse pup call #182
 * ENH: Refactor examples API #185
 * ENH: Add mouse pup call data and zebra finch call data from ACABB workshop #183
