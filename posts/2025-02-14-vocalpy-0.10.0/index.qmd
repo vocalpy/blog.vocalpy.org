@@ -1,6 +1,6 @@
 ---
 title: VocalPy 0.10.0 released!
-description: Making VocalPy more "functional" in version 0.10.0
+description: What's new in VocalPy version 0.10.0
 author: David Nicholson
 date: 2024-02-14
 categories: [VocalPy, release]
@@ -21,13 +21,16 @@ since it consists of the single commit between this version and the last one,
 consisting of this [pull request](https://github.com/vocalpy/vocalpy/pull/189), 
 cryptically named "Post-NMAC GRC 2024 fixes".
 And, it's a lot of changes.
+Throughout this post, I'll link to specific issues on GitHub 
+that were closed by that pull request, 
+to hopefully show you that there's a method to my madness.
 
-So, context:
+About that cryptic name for the pull request:
 a lot of the features I added and changes I made 
 were after I co-organized and taught 
 this [Acoustic Communication And Bioacoustics Bootcamp](https://github.com/vocalpy/acoustic-communication-and-bioacoustics-bootcamp) 
 at the 2024 Neural Mechanisms of Acoustic Communication 2024 Gordon Research Seminar
-([site here](https://www.grc.org/neural-mechanisms-of-acoustic-communication-grs-conference/2024/)),
+(AKA NMAC GRC 2024, [site here](https://www.grc.org/neural-mechanisms-of-acoustic-communication-grs-conference/2024/)),
 along with the ever-excellent [Tessa Rhinehart](https://www.tessarhinehart.com/).
 
 I want to give a huge, huge thank you to [Nick Jourjine](https://nickjourjine.github.io/) 
@@ -42,39 +45,77 @@ we pointed people to a lot of
 including the [website](https://rhine3.github.io/bioacoustics-software/) 
 with a curated database of bioacoustics software that Tessa has created 
 (newly updated just recently with assistance from the research group she's in), 
-as well as the websites and papers on programming and computational projects 
+as well as guides for scientists on programming and computational projects 
 that I often point people to when I'm teaching.
-Obviously I'm biased, but I think that computational methods 
-in this research area will only continue to become more important. 
+I think that computational methods 
+in this research area will only continue to become more important 
+(although of course I'm biased, and some might say I'm stating the obvious).
 I also think Nick has had a lot of foresight 
-in linking these areas of neuroscience to 
+in connecting these areas of neuroscience to 
 what people are doing in bioacoustics more broadly, 
 for example with his seminar series ["Bridging Brains and Bioacoustics"](https://www.braincoustics.com/).
 
-## Making VocalPy more "functional" in version 0.10.0
+Ok, without further ado, here's a rundown of what's new in VocalPy 0.10.0.
 
-Enough preamble.
-What are these changes and new features that make VocalPy more useful, and move us towards vaunted version 1.0 status?
+## Making VocalPy more functional
 
 I was trying to think of a more pithy way to sum up a bunch of the changes I made in this version, 
 to not make you wade through a list of *enhancements* :sparkles: (as they are often called in CHANGELOGs).
 
 What I came up with is: VocalPy 0.10.0 is more *functional*. 
 Both functional in the sense of, it actually functions for more than one workflow, as I'll explain, 
-and in the sense of functional programming. I'll also explain that.
+and in the sense of functional programming. 
+A core tenet of functional program is to avoid objects with a lot of state that gets mutated (changed);
+this is good for research code in general, and scientific Python in particular, 
+as [others have observed]()
+It turns out a lot of the changes I made were about removing state from objects.
+I don't want this post to be about software design, 
+and I don't want to admit that VocalPy still isn't as functional as I'd want it to be, 
+but I can't resist a good pun (or even a barely functional pun),
+and the idea of making the library more functional gives me a good hook. 
+So we'll go with that.
 
-A picture is worth a thousand words, so I'll show you a picture, although I'm not sure if that makes me more or less pithy. 
+A picture is worth a thousand words, so I'll also show you a picture, although I'm not sure if that makes me more or less pithy. 
 This picture shows changes between version 0.9.0 (top ) and version 0.10.0 (bottom).
-I have been thinking about domain-driven design a lot, that uses these kinds of diagrams.
+
 
 ![changes-schematic](vocalpy-0.9.0-0.10.0.svg)
 
-The first thing you notice, if you compare the `Sound` class on the left side of the diagram, is that I made a bunch of changes to it.
 
-I'll start with a change that might seem minor, but that actually helped me see 
-why we need more of what I'm calling a functional API. 
-I removed the `path` attribute from the `Sound` class, as described in [this issue](https://github.com/vocalpy/vocalpy/issues/162).
-That means that where before you had 
+### Better workflows for making sound clips and segmenting sound
+
+The first set of features and changes 
+have to do with two steps we often take 
+when we begin any analysis of animal sounds.
+
+Step one is to make clips of the sounds we want to analyze.
+Usually you need to do this because your raw data consists of hours of audio, 
+e.g., from a recorder deployed in the field for passive acoustic monitoring, 
+or in a behavioral experiment where you have a rig set up to start recording any time 
+the signal from your microphone goes above some level.
+To make this step easier, the `Sound` class now has a `clip` method 
+(as planned in [issue #149](https://github.com/vocalpy/vocalpy/issues/149))
+
+```python
+import vocalpy as voc
+
+sound = voc.Sound.read("big-audio-file-01.wav")
+
+# first clip containing sound of interest
+clip = sound.clip(start=0., stop=1.4)
+clip.write("big-audio-file-01-clip-01.wav")
+
+# second clip containing sound of interest
+clip2 = sound.clip(start=1.4, stop=2.6)
+clip2.write("big-audio-file-01-clip-02.wav")
+```
+
+Notice in that snippet that we `write` the `clip` to a file. 
+That's because it's just a `Sound`; that is, calling `clip` gives you a new `Sound`.
+Hopefully, that isn't too surprising, 
+but it brings me to the first breaking change: the `Sound` method no longer has a `path` attribute
+(as planned in [issue #162](https://github.com/vocalpy/vocalpy/issues/162)).
+That means that, where before you had 
 
 ```python
 >>> import vocalpy as voc
@@ -82,7 +123,7 @@ That means that where before you had
 Sound(data=array[0.001, -0.002, ...], samplerate=44100, path="samba.wav")
 ```
 
-Now you have
+now you have
 
 ```python
 >>> import vocalpy as voc
@@ -92,92 +133,105 @@ Sound(data=array[0.001, -0.002, ...], samplerate=44100)
 
 Why does this matter?  
 Because the design of the class no longer suggests that a `Sound` is tied to the data found in a specific file 
-found in a specific `path`.
+found at a specific `path`.
+This seemingly minor change corresponds to a much bigger change in my mental model of VocalPy 
+and how we work with it as researchers, but I'll save a discussion of that 
+for another post, assuming you're just here for the "what's new" part,
+ not a unified theory of research software engineering.
 
-Why did I design it this way in the first place?
-Because I wanted to be able to capture the provenance of data, to make it easier to 
-convert a pile of files into a dataset, 
-and I still think that will be important.
-But I kept running into situations where I modified the `Sound`, 
-so it would have been confusing for that sound to have the path attribute.
+That brings us to the second step that we frequently do at the start of an analysis: 
+segment a sequence of sounds into units, for example the syllables of birdsong. 
+In version 0.10.0, the workflow for this has been significantly improved.
+Before I tell you how the workflow has been improved, let me give you some context.
+One common way to segment sound is with signal processing-based methods 
+that set a threshold on the audio signal energy, 
+and consider any period above the threshold to be a segment 
+(see [`vocalpy.segment`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.segment.html)).
+More recently it has become common to use statistical models--more precisely, 
+neural network models for [sound event detection] like [TweetyNet] and [DAS].
+One thing we have noticed is that there is a gap in the literature comparing approaches to segmenting; 
+that's part of what we're trying to make it easier to do (for us and for you). 
+This is why we have a 
+[`vocalpy.metrics.segmentation`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.metrics.segmentation.html) 
+module.
+To make it easier to work with segments and compute these metrics, 
+we represent the output of a segmenting algorithm as a data type, 
+[`vocalpy.Segments`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.Segments.html).
+(You might know that some researchers also use image processing methods to segment a spectrogram into a set of boxes; 
+that's on our [to-do list](https://github.com/vocalpy/vocalpy/issues/55))
+Now that you have the context, how has the workflow improved? 
+The original design had each of the functions in `vocalpy.segment` 
+returned a `Segments` instance, that was a container for a `list` of 
+separate `Segment` instances as well as an associated `Sound`. 
+As of vocalpy 0.10.0, 
+the `vocalpy.Segments` class no longer has an instance of a `vocalpy.Sound` associated with it, 
+and there no longer is a separate `Segment` class 
+(as planned in [issue #154](https://github.com/vocalpy/vocalpy/issues/154)).
+This is another case where I realized life could be a lot easier by uncomplicating the design of the library 
+(and, again, I'll save discussion of that for a separate blog post).
+In place of all these tangled-together classes, 
+we add a single method to the `vocalpy.Sound` class, `vocalpy.Sound.segment`, 
+that takes as its argument a set of `Segments`, and returns a list of `Sound`s
+(as planned in [issue #150](https://github.com/vocalpy/vocalpy/issues/150)).
+You might notice that you could, if you want, `segment` using the `clip` method I just told you about, 
+saving each one of the segments you're going to analyze as a `clip`.
+Again, without going to deeply into a discussion of the grand unified theory of bioaocustics software, 
+there's a couple of drawbacks to that approach:
+first of all, you will end up taking up a bunch of disk space with duplicated data, 
+and second, you will end up with directories full of tiny files 
+that are hard to navigate if you end up needing to inspect some of your data 
+(and, trust me, you will).
+Instead, what you want is to be able to represent the segments themselves as data, 
+and then grab the audio clips on the fly.
+Yes, there are also good reasons to save intermediate steps in your analysis 
+so you don't have to start over from scratch every time you re-run it
+---for example, saving spectrograms you generate from the segments of audio---
+but that's part of the design discussion I'm glossing over here.
+The last thing I added to the `Segments` class was the ability to load a set of segments 
+from a csv file, through a `Segments.from_csv` method 
+(as planned in [issue #186](https://github.com/vocalpy/vocalpy/issues/186)).
+I realized during the bootcamp we ran that it's pretty common to save segmentation in csv files, 
+e.g., using the Python library Pandas, 
+and so we should make it easier to load these.
+(VocalPy saves segments in a json file so we can track metadata like the sampling rate of the segmented audio, 
+but that's again more detail than I want to get into here.)
 
-An example would be to "clip" the sound by removing relatively quiet periods before and after 
-a period that contains sounds of interest made by the species you are studying. 
-With my researcher hat on, 
-I can think of a lot of contexts where this idea of "clips" comes up. 
-So should I, as the developer, add a `Clip` class?
-It's basically a `Sound` without a path.
-Then I would have two classes that are basically the same data container, 
-the only difference between them being a single attribute. 
-That feels weird.
-Programmers who have allergic reactions to the proliferation of classes 
-can feel themselves getting ready to write angry posts on social media 
-about me daring to even have this thought.
-But as a researcher, I still have this need for the library to let me work with 
-what I'm referring to as *clips*, the time periods of interest to me from a larger audio file.
-There are other similar cases where it no longer made sense 
-for a `Sound` to have a `path`, that I'll explain in a second.
-But the broader point is that by removing this `path` attribute, 
-and dropping the idea that a `Sound` is the audio signal from a specific file, 
-we can open ourselves up to a more purely functional approach.
-Instead of a `Clip` class, I can add a `clip` method to the `Sound` class,
-and that gives me back a new `Sound`.
-Of course, we want to be careful not to let the methods on our `Sound` class proliferate either 
--- that could make the class hard to use, hard to reason about, and hard to maintain 
-as a programmer.
-But I am making the judgement call that 
-researchers are going to want to `clip` a `Sound`, 
-and so we should make that easy, 
-and hand them a functional approach that helps. 
-Now that I gave you some concrete examples, let me explain what I mean by "more functional". 
-When I say functional programming, 
-I mean it in a very loose sense that we prefer to create new instances of a data type 
-over an object-oriented approach where we mutate the state of a single object.
-So, when we call `Sound.clip` we get a new, clipped `Sound` instead of changing the data 
-of the existing sound.
-This is "functional" in the same way that methods on a `pandas.DataFrame` are functional, 
-returning a new `DataFrame` unless we say `inplace=True`.
+Ok, we made it through all the details about segemntation.
+Last thing: I want to thank Nick Jourjine (again) -- talking with him about this kind of workflow 
+really helped me think about how to improve it.
 
-The second major change I made was to make it possible to segment a sound. 
-First of all, 
-this is a change I made because I realized 
-somewhat embarrasingly as I put together the content for the bootcamp 
-that the library has (1) functions to find segments in sound, 
-and (2) a class `Segments` that represents the output of those functions, 
-but no way to use the `Segments` to actually do anything useful. 
-Second, this is the other place where a more functional approach 
-really makes so much more sense to me.
-I realized this after talking with Nick Jourjine about his data set, 
-a very small subset of which we used for the workshop.
-He pointed out that his first workflow had been to (1) segment the data, 
-(2) save each segment as a clip (remember I said there were many context in which we want to make clips?), 
-and then (3) carry out further analyses on the clips.
-I have also seen this pattern in other libraries, 
-including AVA and Tim Sainburg's UMAP code.
-AVA puts all the segments in a very large HDF5 file, 
-and Sainburg's code puts them numpy arrays into the elements of a Series in a pandas DataFrame 
-(dataframe purists will be horrified but, whatever, it mostly works). 
-The workflow is something like: 
-segment the audio, and then make some sort of data structure that represents 
-all of the segments from all the audio files.
-See also the `KantoData` structure in Nilo Merino-Recalde's `pykanto`:
-https://nilomr.github.io/pykanto/_build/html/contents/segmenting-vocalisations.html
+## A simpler, consistent workflow for feature extraction
 
-The important thing here is that we don't **need* to do this.
-That's what crystallized in my head after talking with Nick.
-We can represent the `Segments` separately, 
-and then hold off on segmenting the sound into a bunch of smaller sounds 
-until the very last moment.
-As long as we track the audio file and the segments, 
-this works, and avoids the need to either cram 
-all the audio into memory, or to duplicate it as "clips".
+Once I had simplified the workflow for segmenting sounds, 
+I realized I could simplify the workflow for extracting acoustic features from those sounds.
+We use a class, `FeatureExtractor`, to represent this generic step in the workflow;
+it has an `extract` method that gives you back `Features`.
+This `extract` method used to take four different things: 
+either a `Sound`, a `Segment` (with its associated `Sound`), 
+a `list` of `Sound`s, or a `list` of `Segment`s. 
+Obviously, it can't accept a `Segment` or a `list` of them 
+if I remove that class.
+Good, we can remove some code--that's less to maintain.
+I modified the `FeatureExtractor` class to only take in a `Sound` 
+or a `list` of `Sound`s
+(as planned in [issue #163]()).
+I also had some inconsistencies where some functions in [`vocalpy.feature`] 
+would return `Features`, and in other cases it was the `FeatureExtractor` 
+taking the output of one of those functions and making it into a `Features` instance.
+So I fixed that inconsistency 
+(as planned in [issue #145]() and [issue #146]()).
+Last but not least, I renamed the two functions we have right now, 
+from the very verbose, to 
 
 
-I think there are good reasons to represent `Segments` as their own data type: 
-we often want to save 
 
-## Refactor `examples` API
+## Vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN
+* CLN: Have FeatureExtractor only take Sound or list of Sounds #163
+* BUG: feature.soundsig.predefined_acoustic_features should return vocalpy.Features #145
+* BUG/CLN: FeatureExtractor should not be making Features instances #146
+* rename feature extraction functions -> `biosound` and `sat`
 
-## Added vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN
-
-My thinking here is to 
+## Add vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN
+* Add single example files of BF song + mouse pup call #182
+* ENH: Refactor examples API #185
+* ENH: Add mouse pup call data and zebra finch call data from ACABB workshop #183
