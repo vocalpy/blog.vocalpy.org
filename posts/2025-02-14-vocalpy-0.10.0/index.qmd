@@ -8,9 +8,17 @@ categories: [VocalPy, release]
 
 I want to write up a rundown of what's new in 
 version 0.10.0 of VocalPy, released at the end of 2024.
+Here's an overview of what I'll tell you about below.
+
+- [Better workflows for making sound clips and segmenting sound](#sec-sound)
+- [A simpler, consistent workflow for feature extraction](#sec-feature-extraction)
+- [Add more example data and make it easier to work with](#sec-example-data)
+- [Vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN](#sec-vignettes)
+
+But first, some context: 
 I am feeling good about this release 
 because I think it's a pretty solid step forwards for the package.
-Let me tell you why that is, 
+I'll tell you why that is, 
 by giving you a brief rundown of the new features and changes,
 with some narrative that you won't get from the 
 [CHANGELOG](https://github.com/vocalpy/vocalpy/blob/main/docs/CHANGELOG.md#0100).
@@ -20,18 +28,17 @@ that GitHub gives us,
 since it consists of the single commit between this version and the last one,
 consisting of this [pull request](https://github.com/vocalpy/vocalpy/pull/189), 
 cryptically named "Post-NMAC GRC 2024 fixes".
-And, it's a lot of changes.
+That single commit includes a lot of changes.
 Throughout this post, I'll link to specific issues on GitHub 
 that were closed by that pull request, 
 to hopefully show you that there's a method to my madness.
-
 About that cryptic name for the pull request:
 a lot of the features I added and changes I made 
 were after I co-organized and taught 
 this [Acoustic Communication And Bioacoustics Bootcamp](https://github.com/vocalpy/acoustic-communication-and-bioacoustics-bootcamp) 
 at the 2024 Neural Mechanisms of Acoustic Communication 2024 Gordon Research Seminar
 (AKA NMAC GRC 2024, [site here](https://www.grc.org/neural-mechanisms-of-acoustic-communication-grs-conference/2024/)),
-along with the ever-excellent [Tessa Rhinehart](https://www.tessarhinehart.com/).
+together with the always-excellent [Tessa Rhinehart](https://www.tessarhinehart.com/).
 (Below I'll call it the ACAB workshop, for short.)
 
 I want to give a huge, huge thank you to [Nick Jourjine](https://nickjourjine.github.io/) 
@@ -45,7 +52,7 @@ we pointed people to a lot of
 [resources](https://docs.google.com/document/d/1RSqPbhUZk8P-8q9_0qSpsMJj8Qbx8q4kAHJw-KBHIwg/edit?tab=t.0#heading=h.kvttpjnec5kk) 
 including the [website](https://rhine3.github.io/bioacoustics-software/) 
 with a curated database of bioacoustics software that Tessa has created 
-(newly updated just recently with assistance from the research group she's in), 
+(newly updated just recently with an assist from the research group she's in), 
 as well as guides for scientists on programming and computational projects 
 that I often point people to when I'm teaching.
 I think that computational methods 
@@ -58,30 +65,7 @@ for example with his seminar series ["Bridging Brains and Bioacoustics"](https:/
 
 Ok, without further ado, here's a rundown of what's new in VocalPy 0.10.0.
 
-## Making VocalPy more functional
-
-I was trying to think of a more pithy way to sum up a bunch of the changes I made in this version, 
-to not make you wade through a list of *enhancements* :sparkles: (as they are often called in CHANGELOGs).
-
-What I came up with is: VocalPy 0.10.0 is more *functional*. 
-Both functional in the sense of, it actually functions for more than one workflow, as I'll explain, 
-and in the sense of functional programming. 
-A core tenet of functional program is to avoid objects with a lot of state that gets mutated (changed);
-this is good for research code in general, and scientific Python in particular, 
-as [others have observed]()
-It turns out a lot of the changes I made were about removing state from objects.
-I don't want this post to be about software design, 
-and I don't want to admit that VocalPy still isn't as functional as I'd want it to be, 
-but I can't resist a good pun (or even a barely functional pun),
-and the idea of making the library more functional gives me a good hook. 
-So we'll go with that.
-
-A picture is worth a thousand words, so I'll also show you a picture, although I'm not sure if that makes me more or less pithy. 
-This picture shows changes between version 0.9.0 (top ) and version 0.10.0 (bottom).
-
-![changes-schematic](vocalpy-0.9.0-0.10.0.svg)
-
-### Better workflows for making sound clips and segmenting sound
+### Better workflows for making sound clips and segmenting sound {#sec-sound}
 
 The first set of features and changes 
 have to do with two steps we often take 
@@ -199,7 +183,7 @@ Ok, we made it through all the details about segemntation.
 Last thing: I want to thank Nick Jourjine (again) -- talking with him about this kind of workflow 
 really helped me think about how to improve it.
 
-## A simpler, consistent workflow for feature extraction
+## A simpler, consistent workflow for feature extraction {#sec-feature-extraction}
 
 Once I had simplified the workflow for segmenting sounds, 
 I realized I could simplify the workflow for extracting acoustic features from those sounds.
@@ -225,7 +209,7 @@ and `vocalpy.features.soundsig.predefined_acoustic_features`, to just
 `vocalpy.features.sat` and `vocalpy.features.biosound` 
 (as planned in [issue #190](https://github.com/vocalpy/vocalpy/issues/190)).
 
-## Add more example data and make it easier to work with
+## Add more example data and make it easier to work with {#sec-example-data}
 
 A crucial part of any scientific Python package is having example data, 
 and having it be easy to work with, 
@@ -255,9 +239,42 @@ If you want filenames instead of data types,
 e.g. to demonstrate functionality for loading data from files, 
 you can instead specify `path=True`.
 
-## Add vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN
+## Vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN {#sec-vignettes}
 
-In the NMAC GRC 2024 ACAB bootcamp, 
-* Add single example files of BF song + mouse pup call #182
-* ENH: Refactor examples API #185
-* ENH: Add mouse pup call data and zebra finch call data from ACABB workshop #183
+One of the goals of VocalPy is to make it easy to do stuff that's specific to acoustic communication research, 
+and also get out of the way and make it easy to work with other packages in the scientific Python ecosystem.
+In the ACAB bootcamp, we worked through a couple of notebooks that show this in action.
+Specifically, we showed how to fit a classifier in scikit-learn, 
+and how to reduce the dimensionality of a set of animal sounds with UMAP, and cluster the embeddings from UMAP with HDBSCAN. 
+One more thank you to Nick Jourjine, who kindly put together a demo-sized dataset for this second exercise, 
+from the much larger [dataset](https://datadryad.org/dataset/doi:10.5061/dryad.g79cnp5ts) 
+that accompanied his [paper](https://linkinghub.elsevier.com/retrieve/pii/S0960982223001859) on two types of pup calls in deer mice
+(and let's also recognize and thank him for actually sharing the [code](https://github.com/nickjourjine/peromyscus-pup-vocal-evolution) 
+that will make it easier for otherss to build on this work!)
+In VocalPy 0.10.0, I have added these notebooks as vignettes in the documentation 
+[here](https://vocalpy.readthedocs.io/en/latest/user/howto/index.html)
+(as planned in [issue #166](https://github.com/vocalpy/vocalpy/issues/166)
+and [issue #168](https://github.com/vocalpy/vocalpy/issues/168)).
+I want to be sure to point out that the scikit-learn vignette is adapted 
+from Frederic Theunissen's [BioSound tutorial](https://github.com/theunissenlab/BioSoundTutorial), 
+because we're using the [set of acoustic features](https://pubmed.ncbi.nlm.nih.gov/26581377/) built into their `soundsig.BioSound` class
+The UMAP vignette is adapted from this helpful [paper](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.13754) 
+by Thomas et al. and the accompanying [code](https://github.com/marathomas/tutorial_repo).
+Again, I'm just trying to make what they've done easier for everyone else to do, 
+by focusing a little more on the software engineering side of things.
+
+
+## Stay tuned
+
+Hopefully you have a better understanding of how VocalPy is evolving after reading this post. 
+It is now easier to make clips from your raw data, segment your sounds of interest, 
+and extract acoustic features from those sounds. 
+It's also easier to demonstrate all this functionality with the example data built into VocalPy,
+and it's easier to see from the docs how you can take what you get out of VocalPy and 
+use it with other Python packages like scikit-learn and UMAP-learn. 
+Having done this development work, for now I will be focusing on new 
+statistical models for jointly segmenting and classifying animal sounds that I'm developing with Yarden Cohen, 
+based on [what we're learning about existing models](https://github.com/vocalpy/Nicholson-Cohen-SfN-2023-poster).
+In the meantime, we'd love to have your input in our [forum](https://forum.vocalpy.org/), 
+and of course if you find a bug or you have your own ideas for features, you can [raise an issue on the VocalPy repo](https://github.com/vocalpy/vocalpy/issues).
+
