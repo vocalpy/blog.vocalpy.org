@@ -6,16 +6,28 @@ date: 2024-02-14
 categories: [VocalPy, release]
 ---
 
-I want to write up a rundown of what's new in 
+I want to write up what's new in 
 version 0.10.0 of VocalPy, released at the end of 2024.
-Here's an overview of what I'll tell you about below.
+Here's an overview:
 
 - [Better workflows for making sound clips and segmenting sound](#sec-sound)
 - [A simpler, consistent workflow for feature extraction](#sec-feature-extraction)
-- [Add more example data and make it easier to work with](#sec-example-data)
+- [More example data that's easier to work with](#sec-example-data)
 - [Vignettes on using VocalPy with scikit-learn, UMAP, and HDBSCAN](#sec-vignettes)
 
-But first, some context: 
+I'll also give you an overview with this diagram of changes between version 0.9.0 (top ) and version 0.10.0 (bottom).
+
+![Diagram showing changes between versions 0.9.0 and 0.10.0 of VocalPy](vocalpy-0.9.0-0.10.0.svg)
+
+This diagram represents the working model I have of two of the main workflows in VocalPy. 
+Below I'll refer back to it, but this post will really focus on improvements and new features. 
+I think diagrams like this are really important to help researchers and 
+software engineers speak the same language---even when those two groups overlap---
+but I'll save my thoughts on how to design software for this domain for other posts.
+
+## Bootcamp-driven development
+
+First, some context.
 I am feeling good about this release 
 because I think it's a pretty solid step forwards for the package.
 I'll tell you why that is, 
@@ -25,10 +37,11 @@ with some narrative that you won't get from the
 You definitely won't get that from the 
 [auto-generated release notes](https://github.com/vocalpy/vocalpy/releases/tag/0.10.0) 
 that GitHub gives us, 
-since it consists of the single commit between this version and the last one,
-consisting of this [pull request](https://github.com/vocalpy/vocalpy/pull/189), 
+because they consist of the single commit between this version and the last one.
+That single commit includes a lot of changes,
+that corresponds to this [pull request](https://github.com/vocalpy/vocalpy/pull/189), 
 cryptically named "Post-NMAC GRC 2024 fixes".
-That single commit includes a lot of changes.
+
 Throughout this post, I'll link to specific issues on GitHub 
 that were closed by that pull request, 
 to hopefully show you that there's a method to my madness.
@@ -39,7 +52,7 @@ this [Acoustic Communication And Bioacoustics Bootcamp](https://github.com/vocal
 at the 2024 Neural Mechanisms of Acoustic Communication 2024 Gordon Research Seminar
 (AKA NMAC GRC 2024, [site here](https://www.grc.org/neural-mechanisms-of-acoustic-communication-grs-conference/2024/)),
 together with the always-excellent [Tessa Rhinehart](https://www.tessarhinehart.com/).
-(Below I'll call it the ACAB workshop, for short.)
+(Below I'll call it the ACAB bootcamp for short.)
 
 I want to give a huge, huge thank you to [Nick Jourjine](https://nickjourjine.github.io/) 
 and [Diana Liao](https://scholar.google.com/citations?user=QeqBfDMAAAAJ&hl=en) for inviting Tessa and I to teach this workshop. 
@@ -63,7 +76,7 @@ in connecting these areas of neuroscience to
 what people are doing in bioacoustics more broadly, 
 for example with his seminar series ["Bridging Brains and Bioacoustics"](https://www.braincoustics.com/).
 
-Ok, without further ado, here's a rundown of what's new in VocalPy 0.10.0.
+Without further ado, here's a rundown of what's new in VocalPy 0.10.0.
 
 ### Better workflows for making sound clips and segmenting sound {#sec-sound}
 
@@ -115,23 +128,30 @@ Sound(data=array[0.001, -0.002, ...], samplerate=44100)
 ```
 
 Why does this matter?  
-Because the design of the class no longer suggests that a `Sound` is tied to the data found in a specific file 
-found at a specific `path`.
+Because the design of the class no longer implies that a `Sound` is tied to the data found in a file 
+at a specific `path`.
 This seemingly minor change corresponds to a much bigger change in my mental model of VocalPy 
-and how we work with it as researchers, but I'll save a discussion of that 
+and how we work with it as researchers.
+Again, I'll save a discussion of that 
 for another post, assuming you're just here for the "what's new" part,
  not a unified theory of research software engineering.
 
 That brings us to the second step that we frequently do at the start of an analysis: 
-segment a sequence of sounds into units, for example the syllables of birdsong. 
+segment a sequence of sounds into units, for example, the syllables of birdsong. 
 In version 0.10.0, the workflow for this has been significantly improved.
-Before I tell you how the workflow has been improved, let me give you some context.
+Before I tell you how the workflow has been improved, let me give you a little background.
 One common way to segment sound is with signal processing-based methods 
 that set a threshold on the audio signal energy, 
 and consider any period above the threshold to be a segment 
-(see [`vocalpy.segment`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.segment.html)).
+(like the functions in [`vocalpy.segment`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.segment.html)).
+A cartoon diagram of this sort of method is shown below.
+
+![Figure 1 of TweetyNet paper showing segmentation](lax_63853_elife-63853-fig1-v2.tif.jpg)
+
 More recently it has become common to use statistical models--more precisely, 
-neural network models for [sound event detection] like [TweetyNet] and [DAS].
+neural network models for [sound event detection](https://peerj.com/articles/13152/) 
+such as [TweetyNet](https://elifesciences.org/articles/63853) 
+and [DAS](https://elifesciences.org/articles/68837).
 One thing we have noticed is that there is a gap in the literature comparing approaches to segmenting; 
 that's part of what we're trying to make it easier to do (for us and for you). 
 This is why we have a 
@@ -142,7 +162,8 @@ we represent the output of a segmenting algorithm as a data type,
 [`vocalpy.Segments`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.Segments.html).
 (You might know that some researchers also use image processing methods to segment a spectrogram into a set of boxes; 
 that's on our [to-do list](https://github.com/vocalpy/vocalpy/issues/55))
-Now that you have the context, how has the workflow improved? 
+
+Now that we're all on the same page about the background, how has the workflow improved? 
 The original design had each of the functions in `vocalpy.segment` 
 returned a `Segments` instance, that was a container for a `list` of 
 separate `Segment` instances as well as an associated `Sound`. 
@@ -158,7 +179,7 @@ that takes as its argument a set of `Segments`, and returns a list of `Sound`s
 (as planned in [issue #150](https://github.com/vocalpy/vocalpy/issues/150)).
 You might notice that you could, if you want, `segment` using the `clip` method I just told you about, 
 saving each one of the segments you're going to analyze as a `clip`.
-Again, without going to deeply into a discussion of the grand unified theory of bioaocustics software, 
+Again, without going to deeply into a discussion of software design, 
 there's a couple of drawbacks to that approach:
 first of all, you will end up taking up a bunch of disk space with duplicated data, 
 and second, you will end up with directories full of tiny files 
@@ -180,7 +201,7 @@ and so we should make it easier to load these.
 but that's again more detail than I want to get into here.)
 
 Ok, we made it through all the details about segemntation.
-Last thing: I want to thank Nick Jourjine (again) -- talking with him about this kind of workflow 
+Last thing: I want to thank Nick Jourjine (again)--talking with him about this kind of workflow 
 really helped me think about how to improve it.
 
 ## A simpler, consistent workflow for feature extraction {#sec-feature-extraction}
@@ -209,7 +230,7 @@ and `vocalpy.features.soundsig.predefined_acoustic_features`, to just
 `vocalpy.features.sat` and `vocalpy.features.biosound` 
 (as planned in [issue #190](https://github.com/vocalpy/vocalpy/issues/190)).
 
-## Add more example data and make it easier to work with {#sec-example-data}
+## More example data that's easier to work with {#sec-example-data}
 
 A crucial part of any scientific Python package is having example data, 
 and having it be easy to work with, 
@@ -263,18 +284,20 @@ by Thomas et al. and the accompanying [code](https://github.com/marathomas/tutor
 Again, I'm just trying to make what they've done easier for everyone else to do, 
 by focusing a little more on the software engineering side of things.
 
-
 ## Stay tuned
 
 Hopefully you have a better understanding of how VocalPy is evolving after reading this post. 
 It is now easier to make clips from your raw data, segment your sounds of interest, 
 and extract acoustic features from those sounds. 
-It's also easier to demonstrate all this functionality with the example data built into VocalPy,
-and it's easier to see from the docs how you can take what you get out of VocalPy and 
+It's also easier to demonstrate all this functionality with the example data built into VocalPy.
+Last but not least, it's easier to see from the docs how you can take what you get out of VocalPy and 
 use it with other Python packages like scikit-learn and UMAP-learn. 
 Having done this development work, for now I will be focusing on new 
-statistical models for jointly segmenting and classifying animal sounds that I'm developing with Yarden Cohen, 
+statistical models for jointly segmenting and classifying animal sounds that I'm developing with 
+[Yarden Cohen](https://yardencsgithub.github.io/), 
 based on [what we're learning about existing models](https://github.com/vocalpy/Nicholson-Cohen-SfN-2023-poster).
-In the meantime, we'd love to have your input in our [forum](https://forum.vocalpy.org/), 
-and of course if you find a bug or you have your own ideas for features, you can [raise an issue on the VocalPy repo](https://github.com/vocalpy/vocalpy/issues).
+(I also want to thank Yarden for continuing our collaboration; 
+without him none of this would be possible.)
+While I work on those new models and on the next version of VocalPy, we'd love to have your input in our [forum](https://forum.vocalpy.org/).
+And of course, if you find a bug or you have your own ideas for features, you can [raise an issue on the VocalPy repo](https://github.com/vocalpy/vocalpy/issues).
 
