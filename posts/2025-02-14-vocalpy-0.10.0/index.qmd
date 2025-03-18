@@ -19,11 +19,12 @@ I'll also give you an overview with this diagram of changes between version 0.9.
 
 ![Diagram showing changes between versions 0.9.0 and 0.10.0 of VocalPy](vocalpy-0.9.0-0.10.0.svg)
 
-This diagram represents the working model I have of two of the main workflows in VocalPy. 
+The bottom half of the diagram represents the working model I have of two of the main workflows in VocalPy: 
+segmenting sounds and extracting features. 
 Below I'll refer back to it, but this post will really focus on improvements and new features. 
 I think diagrams like this are really important to help researchers and 
 software engineers speak the same language---even when those two groups overlap---
-but I'll save my thoughts on how to design software for this domain for other posts.
+but I'll save my thoughts on how to design software for other posts.
 
 ## Bootcamp-driven development
 
