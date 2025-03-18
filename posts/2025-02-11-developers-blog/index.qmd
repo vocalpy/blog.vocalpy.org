@@ -10,8 +10,8 @@ Hey, it's me, [David](https://nicholdav.info/).
 
 I'm the person who develops most of [this code](https://github.com/vocalpy). 
 I'm interested in how animals communicate with sound, 
-and I'm trying to make it easy for me and other reseachers to study 
-this behavior computationally.
+and I'm trying to make life easier for all of us that 
+use computational methods to study acoustic behavior. 
 
 Hopefully, at some point, a team of people will work together to develop it, 
 or something like it, once I can convince them that's a good idea.  
@@ -26,7 +26,7 @@ one way to talk people into things is to build not just a project, but a communi
 and notice I am ignoring rule 1.)
 Well, I have been working on building a community:  
 we have gotten a lot of contributors 
-to at least one package, (vak)[https://github.com/vocalpy/vak?tab=readme-ov-file#contributors-].
+to at least one package, [vak](https://github.com/vocalpy/vak?tab=readme-ov-file#contributors-).
 And I am expecting to get more contributors to 
 our core package [VocalPy](https://vocalpy.readthedocs.io/en/latest/), 
 once we share results we are getting with it right now,
@@ -37,7 +37,8 @@ But it seems like I need to do more if I really want the community to grow.
 I need to actually explain about what I'm doing here.
 
 So, okay, fine, we will have a developer's blog.
-And I guess right now that's the royal we--mainly it's just me.
+And I guess right now that's the royal we--mostly me, 
+although I definitely don't want it to stay that way.
 Mainly this will be a place to post about new releases, 
 and about research that uses the code.
-Stay tuned for more.
+Look for more posts soon.
