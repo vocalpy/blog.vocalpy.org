@@ -86,11 +86,12 @@ have to do with two steps we often take
 when we begin any analysis of animal sounds.
 
 Step one is to make clips of the sounds we want to analyze.
-Usually you need to do this because your raw data consists of hours of audio, 
-e.g., from a recorder deployed in the field for passive acoustic monitoring, 
-or in a behavioral experiment where you have a rig set up to start recording any time 
+Usually you need to do this because your raw data consists of hours of audio.
+For example, you have an Automated Recording Unit deployed in the field for passive acoustic monitoring 
+that records some number of hours every day.
+Or you're running a behavioral experiment where you have a rig set up to start recording any time 
 the signal from your microphone goes above some level.
-To make this step easier, the `Sound` class now has a `clip` method 
+To make this first step of analysis easier, the `Sound` class now has a `clip` method 
 (as planned in [issue #149](https://github.com/vocalpy/vocalpy/issues/149))
 
 ```python
@@ -141,9 +142,9 @@ That brings us to the second step that we frequently do at the start of an analy
 segment a sequence of sounds into units, for example, the syllables of birdsong. 
 In version 0.10.0, the workflow for this has been significantly improved.
 Before I tell you how the workflow has been improved, let me give you a little background.
-One common way to segment sound is with signal processing-based methods 
-that set a threshold on the audio signal energy, 
-and consider any period above the threshold to be a segment 
+One common way to segment sound is with signal processing-based methods. 
+Typically these methods set a threshold on some measure of the energy of an audio signal, 
+and consider any period above that threshold to be a segment 
 (like the functions in [`vocalpy.segment`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.segment.html)).
 A cartoon diagram of this sort of method is shown below.
 
@@ -172,11 +173,10 @@ As of vocalpy 0.10.0,
 the `vocalpy.Segments` class no longer has an instance of a `vocalpy.Sound` associated with it, 
 and there no longer is a separate `Segment` class 
 (as planned in [issue #154](https://github.com/vocalpy/vocalpy/issues/154)).
-This is another case where I realized life could be a lot easier by uncomplicating the design of the library 
-(and, again, I'll save discussion of that for a separate blog post).
-In place of all these tangled-together classes, 
+This is another case where I realized life could be a lot easier by simplifying the design of the library.
+In place of all these tightly-coupled classes, 
 we add a single method to the `vocalpy.Sound` class, `vocalpy.Sound.segment`, 
-that takes as its argument a set of `Segments`, and returns a list of `Sound`s
+that takes as its argument an instance of `Segments`, and returns a list of `Sound`s
 (as planned in [issue #150](https://github.com/vocalpy/vocalpy/issues/150)).
 You might notice that you could, if you want, `segment` using the `clip` method I just told you about, 
 saving each one of the segments you're going to analyze as a `clip`.
@@ -201,28 +201,31 @@ and so we should make it easier to load these.
 (VocalPy saves segments in a json file so we can track metadata like the sampling rate of the segmented audio, 
 but that's again more detail than I want to get into here.)
 
-Ok, we made it through all the details about segemntation.
+Ok, we made it through all the details about segmentation.
 Last thing: I want to thank Nick Jourjine (again)--talking with him about this kind of workflow 
 really helped me think about how to improve it.
 
 ## A simpler, consistent workflow for feature extraction {#sec-feature-extraction}
 
 Once I had simplified the workflow for segmenting sounds, 
-I realized I could simplify the workflow for extracting acoustic features from those sounds.
+I realized I could also simplify the workflow for extracting acoustic features from those sounds.
 We use a class, `FeatureExtractor`, to represent this generic step in the workflow;
 it has an `extract` method that gives you back `Features`.
 This `extract` method used to take four different things: 
 either a `Sound`, a `Segment` (with its associated `Sound`), 
 a `list` of `Sound`s, or a `list` of `Segment`s. 
-Obviously, it can't accept a `Segment` or a `list` of them 
-if I remove that class.
-Good, we can remove some code--that's less to maintain.
-I modified the `FeatureExtractor` class to only take in a `Sound` 
+Well, I just told you I removed the `Segment` class, so obviously 
+the `extract` method can't accept a `Segment` or a `list` of them anymore. 
+Good, we can remove the logic in `extract` to handle the `Segment` class---that's less to maintain.
+So I modified the `FeatureExtractor` class to only take in a `Sound` 
 or a `list` of `Sound`s
-(as planned in [issue #163]()).
-I also had some inconsistencies where some functions in [`vocalpy.feature`] 
-would return `Features`, and in other cases it was the `FeatureExtractor` 
-taking the output of one of those functions and making it into a `Features` instance.
+(as planned in [issue #163](https://github.com/vocalpy/vocalpy/issues/163)).
+There was also an inconsistency in the 
+[`vocalpy.feature`](https://vocalpy.readthedocs.io/en/latest/api/generated/vocalpy.feature.html) 
+module, where some functions would return `Features`, 
+and others did not, instead returning a `dict` mapping feature names to values.
+In those cases it was the `FeatureExtractor` 
+taking the output of those functions and making it into a `Features` instance.
 So I fixed that inconsistency 
 (as planned in [issue #145](https://github.com/vocalpy/vocalpy/issues/145) and [issue #146](https://github.com/vocalpy/vocalpy/issues/145)).
 Last but not least, I renamed the two feature extraction functions we have right now: 
@@ -267,7 +270,7 @@ One of the goals of VocalPy is to make it easy to do stuff that's specific to ac
 and also get out of the way and make it easy to work with other packages in the scientific Python ecosystem.
 In the ACAB bootcamp, we worked through a couple of notebooks that show this in action.
 Specifically, we showed how to fit a classifier in scikit-learn, 
-and how to reduce the dimensionality of a set of animal sounds with UMAP, and cluster the embeddings from UMAP with HDBSCAN. 
+and how to reduce the dimensionality of a set of animal sounds with UMAP, then cluster the embeddings from UMAP with HDBSCAN. 
 One more thank you to Nick Jourjine, who kindly put together a demo-sized dataset for this second exercise, 
 from the much larger [dataset](https://datadryad.org/dataset/doi:10.5061/dryad.g79cnp5ts) 
 that accompanied his [paper](https://linkinghub.elsevier.com/retrieve/pii/S0960982223001859) on two types of pup calls in deer mice
@@ -279,7 +282,7 @@ In VocalPy 0.10.0, I have added these notebooks as vignettes in the documentatio
 and [issue #168](https://github.com/vocalpy/vocalpy/issues/168)).
 I want to be sure to point out that the scikit-learn vignette is adapted 
 from Frederic Theunissen's [BioSound tutorial](https://github.com/theunissenlab/BioSoundTutorial), 
-because we're using the [set of acoustic features](https://pubmed.ncbi.nlm.nih.gov/26581377/) built into their `soundsig.BioSound` class
+because we're using the [set of acoustic features](https://pubmed.ncbi.nlm.nih.gov/26581377/) built into their `soundsig.BioSound` class.
 The UMAP vignette is adapted from this helpful [paper](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2656.13754) 
 by Thomas et al. and the accompanying [code](https://github.com/marathomas/tutorial_repo).
 Again, I'm just trying to make what they've done easier for everyone else to do, 
