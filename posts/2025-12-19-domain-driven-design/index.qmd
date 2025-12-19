@@ -32,6 +32,8 @@ But I do think it's worth taking just a little bit of time to justify
 my approach in words, and claim that there's a method to my madness. 
 That's what I said I'd do 
 [in the first post on this blog](../2025-02-11-developers-blog/index.qmd) after all.
+And reading books like ["The Architecture of Open Source Applications"](https://aosabook.org/en/) 
+has made me think it's worth talking about stuff like this. 
 
 ## What is domain-driven design?
 
@@ -40,14 +42,14 @@ If you read the [Forum Acusticum proceedings paper](https://dael.euracoustics.or
 But I don't talk about it a lot, since that you only get so much space in a proceedings paper.
 So please consider this a much more informal version of what I wrote there. 
 
-For this post to make sense, I have to introduce domain-driven design (henceforth, DDD).
+For this post to make sense, I have to introduce domain-driven design.
 I also need to repeat myself a little -- I wrote about this 
-[on my person blog](https://blog.nicholdav.info/posts/2025-01-02-domain-driven-design/), 
+[on my personal blog](https://blog.nicholdav.info/posts/2025-01-02-domain-driven-design/), 
 where I was talking about it in reference to another book, 
 [Structure and Interpretation of Computer Programs](https://sourceacademy.org/sicpjs).
-So if you already read that, you can skip down to []().
+So if you already read that, you can skip down to [the next section](#vocalpy-domain-driven).
 
-But first, let me introduce domain-driven design, and tell you why you might care about it.
+What is domain-driven design, and why should you care about it?
 Sometime in 2022-2023, I read 
 [Domain-Driven Design](https://www.domainlanguage.com/ddd/) by Eric Evans, and I got really excited about it.
 (You can get it from bookshop.org 
@@ -83,7 +85,7 @@ These are simple, rough box and arrow sketches as he shows.
 
 ![evans figure 1.2](evans-2003-fig1.2.png)
 
-## VocalPy: Domain-Driven Design from the start
+## VocalPy: Domain-Driven Design from the start {#vocalpy-domain-driven}
 
 I happened to read Evans' book at the same time that I had been sketching out some initial ideas for the VocalPy library that I develop.
 You can see some of these sketches here: 
@@ -142,18 +144,28 @@ but instead of doing it with other people,
 I started by doing it with the part of my brain that claims to know things about acoustic communication.
 (I have since engaged with other people who actually know these things and can give me good feedback.)
 
-I also came back to the idea of domain-driven development in a talk I gave about VocalPy 
-where I talked a little bit about how it maybe clashes with some recommendations 
-for programming in scientific Python.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PtTegIM6m1o?si=A6MLDiXgRoDnhuTR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
 ## Domain-driven design is just data abstraction with doodles, and you should do it anyway
 
 Ok, so now let me circle back around, talk about why, sure, domain-driven design is not a new idea 
 (as Evans himself acknowledges right at the start of his book), 
 and why you should be doing it, or doing even more of it. 
 This is where I come back to the "no" part of "Do we already do this? Yes and no." 
+
+Here I want to point to a talk I gave, fitting title "VocalPy: a case study of domain-driven development".
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PtTegIM6m1o?si=A6MLDiXgRoDnhuTR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Part of the reason I want to include this, is that I 
+talk about how my attempt to apply domain-driven design has 
+led me to do things that *maybe* clashes with some recommendations 
+for programming in scientific Python.
+
+Compare for example with Gaël Varoquaux's recommendations in this SciPy 2017 talk:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/eVDDL6tgsv8?si=oOBxq0spvx4LNRw-&amp;start=1383" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Yes, this is foreshadowing for another blog post.
+
 In the discussion at the end of that talk, I said just what I've said here, 
 that a lot of people react as if, "so, yeah, we already do that".
 If that's so, then show me the doodles! 
