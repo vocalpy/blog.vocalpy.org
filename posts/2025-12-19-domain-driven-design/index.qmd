@@ -85,7 +85,7 @@ These are simple, rough box and arrow sketches as he shows.
 
 ![evans figure 1.2](evans-2003-fig1.2.png)
 
-## VocalPy: Domain-Driven Design from the start {#vocalpy-domain-driven}
+## From Domain-Driven Design to VocalPy {#vocalpy-domain-driven}
 
 I happened to read Evans' book at the same time that I had been sketching out some initial ideas for the VocalPy library that I develop.
 You can see some of these sketches here: 
@@ -108,17 +108,18 @@ you *should* be doing this, if you're not already,
 and what's more, you should be including it in your docs for your software.
 And this goes for *all* software, unless you are literally writing such a boring cookiecutter CRUD app 
 that a so-called Large Language Model can regurgitate it perfectly for you after being "trained" on the actual work of human beings.
+These drawings should be part of the [theory](https://cekrem.github.io/posts/programming-as-theory-building-naur/) 
+of your scientific software.
 
-## How I've used domain-driven design
+## How I've used domain-driven design when developing VocalPy
 
 Ok, now you have an idea of what domain-driven design is.
-You might ask yourself, have I done anything with this 
-or do I just like pontificating into the void about ideas from computer science and tech books?
+You might ask yourself, have I done anything with this? 
+Or do I just like pontificating into the void about ideas from computer science and tech books?
 Even if I haven't gone back to finish the book and immerse myself in every detail,
-the core idea has really stuck with me.
-So much so that you can see that I cited the book in the 
-[Proceedings paper](https://dael.euracoustics.org/confs/fa2023/data/articles/000403.pdf) 
-where I first introduced VocalPy, and where I included similar schematics.
+the core idea has really stuck with me. 
+Going back to that [Proceedings paper](https://dael.euracoustics.org/confs/fa2023/data/articles/000403.pdf) 
+where I first introduced VocalPy, you can see where I included similar schematics.
 
 ![figure 1 from VocalPy proceedings paper](voc-fig1-model.png)
 
@@ -144,7 +145,12 @@ but instead of doing it with other people,
 I started by doing it with the part of my brain that claims to know things about acoustic communication.
 (I have since engaged with other people who actually know these things and can give me good feedback.)
 
-## Domain-driven design is just data abstraction with doodles, and you should do it anyway
+You can see how I've continued this way, looking at the diagram I show at the top of that 
+[last post on VocalPy version 0.10.0](../2025-02-14-vocalpy-0.10.0/index.qmd)
+
+![Diagram showing changes between versions 0.9.0 and 0.10.0 of VocalPy](../2025-02-14-vocalpy-0.10.0/vocalpy-0.9.0-0.10.0.svg)
+
+## If domain-driven design is just doodles, then you should put doodles in your docs
 
 Ok, so now let me circle back around, talk about why, sure, domain-driven design is not a new idea 
 (as Evans himself acknowledges right at the start of his book), 
@@ -152,19 +158,27 @@ and why you should be doing it, or doing even more of it.
 This is where I come back to the "no" part of "Do we already do this? Yes and no." 
 
 Here I want to point to a talk I gave, fitting title "VocalPy: a case study of domain-driven development".
+(Huge thank you to the [DoePy community] and [Don't Use this Code] for inviting me, 
+and letting me think out loud about these things.)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PtTegIM6m1o?si=A6MLDiXgRoDnhuTR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Part of the reason I want to include this, is that I 
 talk about how my attempt to apply domain-driven design has 
 led me to do things that *maybe* clashes with some recommendations 
-for programming in scientific Python.
+for programming in scientific Python. 
 
 Compare for example with Gaël Varoquaux's recommendations in this SciPy 2017 talk:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/eVDDL6tgsv8?si=oOBxq0spvx4LNRw-&amp;start=1383" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Yes, this is foreshadowing for another blog post.
+This might seem like I'm going off topic, 
+but what I want to show here is that I'm not claiming that domain-driven design 
+is some magic method you can follow to produce correct research code.
+Please also note that I definitely do not claim to be any smarter or more experienced of a developer than Gaël Varoquaux. 
+This is just me trying to wrap my head around designing software for different domains, 
+and how to reconcile that with different programming paradigms.  
+(Yes, this is foreshadowing for another blog post.)
 
 In the discussion at the end of that talk, I said just what I've said here, 
 that a lot of people react as if, "so, yeah, we already do that".
@@ -180,3 +194,4 @@ but I think it's fair to say that this is not the *norm*.
 I don't know that I have ever seen diagrams showing how the *design evolved*, 
 as part of an iterative development process.
 I can't help but feel like that's exactly the sort of thing that could help people get up to speed on how the code works.
+I hope I've shown what that might look like here.
