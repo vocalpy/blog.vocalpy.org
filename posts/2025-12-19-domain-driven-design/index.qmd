@@ -2,6 +2,7 @@
 title: VocalPy as a case study of domain-driven design
 description: How I'm using domain-driven design to develop VocalPy
 author: David Nicholson
+image: vocles-schematic.jpg
 date: 2025-12-19
 categories: [VocalPy, domain-driven design]
 ---
@@ -40,7 +41,7 @@ has made me think it's worth talking about stuff like this.
 If you read the [Forum Acusticum proceedings paper](https://dael.euracoustics.org/confs/fa2023/data/articles/000403.pdf), 
 "Introducing VocalPy", you'll see that I name-drop domain-driven design there.
 But I don't talk about it a lot, since that you only get so much space in a proceedings paper.
-So please consider this a much more informal version of what I wrote there. 
+So please consider this a longer, and much more informal, version of what I wrote there. 
 
 For this post to make sense, I have to introduce domain-driven design.
 I also need to repeat myself a little -- I wrote about this 
@@ -157,14 +158,14 @@ Ok, so now let me circle back around, talk about why, sure, domain-driven design
 and why you should be doing it, or doing even more of it. 
 This is where I come back to the "no" part of "Do we already do this? Yes and no." 
 
-Here I want to point to a talk I gave, fitting title "VocalPy: a case study of domain-driven development".
-(Huge thank you to the [DoePy community] and [Don't Use this Code] for inviting me, 
-and letting me think out loud about these things.)
+Here I want to point to a talk I gave, fitting title "VocalPy as a case study of domain-driven design in scientific Python".
+(Huge thank you to the [DoePy exchange](https://meetup.doepy.org/) and [Don't Use this Code](https://www.dontusethiscode.com/) 
+for inviting me and giving me space to talk through these things with a sympathetic community.)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PtTegIM6m1o?si=A6MLDiXgRoDnhuTR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Part of the reason I want to include this, is that I 
-talk about how my attempt to apply domain-driven design has 
+Part of the reason I want to include this, is that in the talk I 
+explain how my attempt to apply domain-driven design has 
 led me to do things that *maybe* clashes with some recommendations 
 for programming in scientific Python. 
 
@@ -173,7 +174,7 @@ Compare for example with Gaël Varoquaux's recommendations in this SciPy 2017 ta
 <iframe width="560" height="315" src="https://www.youtube.com/embed/eVDDL6tgsv8?si=oOBxq0spvx4LNRw-&amp;start=1383" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 This might seem like I'm going off topic, 
-but what I want to show here is that I'm not claiming that domain-driven design 
+but I want to show here that I'm not claiming that domain-driven design 
 is some magic method you can follow to produce correct research code.
 Please also note that I definitely do not claim to be any smarter or more experienced of a developer than Gaël Varoquaux. 
 This is just me trying to wrap my head around designing software for different domains, 
