@@ -4,6 +4,7 @@ description: How I'm using domain-driven design to develop VocalPy
 author: David Nicholson
 image: vocles-schematic.jpg
 date: 2025-12-19
+date-modified: "03/06/2026"
 categories: [VocalPy, domain-driven design]
 ---
 
@@ -34,7 +35,11 @@ That's what I said I'd do
 And reading books like ["The Architecture of Open Source Applications"](https://aosabook.org/en/) 
 has made me think it's worth talking about stuff like this. 
 
-## What is domain-driven design?
+First I'll [introduce domain-driven design](#what-is-DDD). 
+Then I'll describe [how I've used domain-driven design when developing VocalPy](#domain-driven-vocalpy). 
+To wrap up, I'll relate [domain-driven design to scientific Python more generally](#DDD-and-scipy).
+
+## What is domain-driven design? {#what-is-DDD}
 
 If you go and read the [Forum Acusticum proceedings paper](https://dael.euracoustics.org/confs/fa2023/data/articles/000403.pdf), 
 "Introducing VocalPy", you'll see that I name-drop domain-driven design there.
@@ -43,7 +48,7 @@ Please consider this a longer, much more informal, version of what I wrote there
 
 For this post to make sense, I have to introduce domain-driven design.
 I also need to repeat myself a little -- I wrote about this 
-[on my personal blog](https://blog.nicholdav.info/posts/2025-01-02-domain-driven-design/).
+[on my personal blog](https://blog.nicholdav.info/posts/2026-03-06-domain-driven-design/).
 If you came here from there, feel free to skip down to where I start talking about 
 [how I've used domain-driven design when developing VocalPy](#domain-driven-vocalpy).
 
@@ -162,11 +167,11 @@ Again, realizing that I could make this change by sketching out the workflows
 is, in my understanding at least, exactly the kind of iterative development process 
 that Evans advocates for in his book.
 
-## If domain-driven design is just doodles, then you should put doodles in your docs
+## Domain-driven design and scientific Python {#DDD-and-scipy}
 
 Having read this, you might feel like: "Cool story bro, 
 but domain-driven design is not a new idea. I already do that." 
-I talk about that more in [that post on my personal blog](https://blog.nicholdav.info/posts/2025-01-02-domain-driven-design/).
+I talk about that more in [that post on my personal blog](https://blog.nicholdav.info/posts/2026-03-06-domain-driven-design/).
 To sum it up, here I'll say, sure, domain-driven design is not a new idea 
 (as Evans himself acknowledges right at the start of his book).
 But I also want to use what I've said about VocalPy to make the case 
@@ -187,7 +192,11 @@ Compare for example with Gaël Varoquaux's recommendations in this SciPy 2017 ta
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/eVDDL6tgsv8?si=oOBxq0spvx4LNRw-&amp;start=1383" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-The main thing I am doing that would be considered a no-no is: 
+Crucially, here from slide 21 are Gaël's API design principles for the scipy stack:
+
+![Slide from talk showing API design principles for the scipy stack](gael-talk-slide-21-API-design-principles.png)
+
+The main thing I am doing that would be considered a no-no, according to those principles, is: 
 *not* restricting myself to using the core types of the scientific 
 Python stack, e.g., the NumPy array and the pandas DataFrame. 
 Instead, I have a core set of types in terms of the domain, 
@@ -196,7 +205,7 @@ bioacoustics and acoustic communication in animals:
 These types are basically data containers, where the 
 underlying array or dataframe is just one attribute away, 
 often literally named `data`, i.e., `Sound.data`. 
-My argument is that this is a small price to pay,  
+My argument is that this is a small price to pay, 
 if it makes the code more immediately readable 
 to other researchers in my domains of interest.
 
@@ -207,23 +216,29 @@ Please don't think I'm claiming that domain-driven design
 is some magic method you can follow to produce correct research code.
 I definitely do not claim to be any smarter or more experienced of a developer than Gaël Varoquaux. 
 This is just me trying to wrap my head around designing software for different domains, 
-and how to reconcile that with different programming paradigms.  
+and how to reconcile that with different programming paradigms. 
 (Yes, this is foreshadowing for another blog post.)
 
-In the discussion at the end of that talk, I said just what I've said here, 
-that a lot of people react as if, "so, yeah, we already do that".
-If that's so, then show me the doodles! 
-Show me your mental model of your domain --- put it in your docs! 
-Let me read it, let me actually see these schematics, even if they are just doodles, 
-it helps me to know how your thought process evolved.
-All I can see right now is this insurmountable mountain of code, 
-and I don't even know where the path starts so I can scale it!
-I know that there are examples of people doing this, 
-e.g., in the scientific Python community where I spend most of my time, 
-but I think it's fair to say that this is not the *norm*.
-I don't know that I have ever seen diagrams showing how the *design evolved*, 
-as part of an iterative development process.
-I can't help but feel like that's exactly the sort of thing that could help people get up to speed on how the code works.
-Again: I tried to give some concrete examples of this in [that post on my personal blog](https://blog.nicholdav.info/posts/2025-01-02-domain-driven-design/).
-But I hope that here I've given you some idea of how I use domain-driven design to develop VocalPy, 
+So the last thing I will say is, 
+sometimes when my collaborators and I try to 
+explain what we're doing with the design of VocalPy 
+to other researchers who work with scientific Python, 
+it elicits an impromptu lecture: about 
+how object-oriented programming was all a big OOPs, 
+that everyone learned the hard way that lots of hidden state 
+in classes and class hierarchies is bad, 
+especially for scientific software, 
+and we are about to repeat the mistakes of the past. 
+So: let it be known that I am aware of this, 
+My link to Gaël's talk above shows that I have got the message straight from the horse's mouth 
+(I do not mean to imply that Gaël is a horse).
+You don't need to lecture me. 
+I agree with you already. 
+And *also*, I think scientific Python can have a little bit of class, 
+as a treat. Or, functions, if functions make more sense. 
+*As long as* those classes, or functions, or *whatever*, 
+give domain experts a tool for their domain that is *easier* for them to learn, reason about, and work with. 
+Domain-driven design provides us *one* way to work towards software tools that meet this goal. 
+I tried to give some concrete examples supporting that claim in [the post on my personal blog](https://blog.nicholdav.info/posts/2026-03-06-domain-driven-design/),
+and I hope that here I've given you some idea of how I use domain-driven design to develop VocalPy, 
 and more generally what domain-driven design for research code can look like.
