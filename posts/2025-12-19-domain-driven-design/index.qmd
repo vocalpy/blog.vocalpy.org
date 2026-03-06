@@ -229,13 +229,13 @@ that everyone learned the hard way that lots of hidden state
 in classes and class hierarchies is bad, 
 especially for scientific software, 
 and we are about to repeat the mistakes of the past. 
-So: let it be known that I am aware of this, 
+So: let it be known that I am aware of this. 
 My link to Gaël's talk above shows that I have got the message straight from the horse's mouth 
 (I do not mean to imply that Gaël is a horse).
 You don't need to lecture me. 
 I agree with you already. 
 And *also*, I think scientific Python can have a little bit of class, 
-as a treat. Or, functions, if functions make more sense. 
+as a treat. Or functions, if functions make more sense. 
 *As long as* those classes, or functions, or *whatever*, 
 give domain experts a tool for their domain that is *easier* for them to learn, reason about, and work with. 
 Domain-driven design provides us *one* way to work towards software tools that meet this goal. 
