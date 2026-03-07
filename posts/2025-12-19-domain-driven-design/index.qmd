@@ -32,8 +32,6 @@ But I feel like it's worth taking just a little bit of time to justify
 my approach in words, to claim there's a method to my madness. 
 That's what I said I'd do 
 [in the first post on this blog](../2025-02-11-developers-blog/index.qmd) after all.
-And reading books like ["The Architecture of Open Source Applications"](https://aosabook.org/en/) 
-has made me think it's worth talking about stuff like this. 
 
 First I'll [introduce domain-driven design](#what-is-DDD). 
 Then I'll describe [how I've used domain-driven design when developing VocalPy](#domain-driven-vocalpy). 
@@ -55,12 +53,6 @@ If you came here from there, feel free to skip down to where I start talking abo
 What is domain-driven design, and why should you care about it?
 Sometime in 2022-2023, I read 
 [Domain-Driven Design](https://www.domainlanguage.com/ddd/) by Eric Evans, and I got really excited about it.
-(You can get it from bookshop.org 
-[here](https://bookshop.org/p/books/domain-driven-design-tackling-complexity-in-the-heart-of-software-eric-evans/115006?ean=9780321125217),
-and if you're feeling dangerous you can probably find a PDF of it on a random GitHub repository.)
-I ended up reading it because I had been reading [Architecture Patterns with Python](https://www.cosmicpython.com/book/preface.html), 
-and they mentioned it in the introduction.
-
 If you do nothing else, read the first chapter of Evans' book, where he relates the story 
 of how he worked with some electrical engineers to design software they would use to 
 design printed circuit boards (AKA PCBs).
@@ -107,11 +99,11 @@ I think that I actually drew the sketches first, and had them sitting around on 
 until finally it hit me that I should add them to the repo to document my design process.
 And then reading this part of Evans' book really made me think 
 that drawings like this should be integral to the design process. 
-Part of what I want to say here is that,
-you *should* be doing this, if you're not already, 
-and what's more, you should be including it in your docs for your software.
-And this goes for *all* software, unless you are literally writing such a boring cookiecutter CRUD app 
-that a so-called Large Language Model can regurgitate it perfectly for you, after being "trained" on the actual work of human beings.
+In a previous draft of this post,  I urged people to put these design diagrams 
+into the docs for their software. 
+I'm revising because I'm less convinced that would help users, 
+although personally as a developer I would really be interested 
+to see *more* **design** diagrams.
 I would argue that these drawings should be part of the [theory](https://cekrem.github.io/posts/programming-as-theory-building-naur/) 
 behind your scientific software.
 
